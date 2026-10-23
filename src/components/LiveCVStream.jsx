@@ -264,7 +264,7 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
         <div className="stream-hud-bar">
           <div className="hud-badge-left">
             <span className="live-dot pulse-red"></span>
-            <span className="hud-text">LIVE NVR • {activeCam.toUpperCase()} • 1080P 30FPS</span>
+            <span className="hud-text">LIVE NVR • {activeCam.toUpperCase()} <span className="hud-extra-tag">• 1080P 30FPS</span></span>
           </div>
 
           <div className="hud-actions-right">
@@ -452,20 +452,23 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
                   <button 
                     className={`cam-chip ${activeCam === 'cam-01' ? 'active' : ''}`}
                     onClick={() => setActiveCam('cam-01')}
+                    title="Camera 01 (Overhead Main)"
                   >
-                    Cam 01 (Overhead)
+                    Cam 01
                   </button>
                   <button 
                     className={`cam-chip ${activeCam === 'cam-02' ? 'active' : ''}`}
                     onClick={() => setActiveCam('cam-02')}
+                    title="Camera 02 (North Feeder)"
                   >
-                    Cam 02 (North Feeder)
+                    Cam 02
                   </button>
                   <button 
                     className={`cam-chip ${activeCam === 'cam-03' ? 'active' : ''}`}
                     onClick={() => setActiveCam('cam-03')}
+                    title="Camera 03 (Brooder Zone)"
                   >
-                    Cam 03 (Brooder)
+                    Cam 03
                   </button>
                 </div>
                 <div className="mobile-telemetry-strip">
@@ -953,6 +956,12 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
             padding: 8px 12px 14px 12px;
           }
 
+          @media (max-width: 480px) {
+            .hud-extra-tag {
+              display: none;
+            }
+          }
+
           /* Mobile Cameras View */
           .mobile-cam-pills {
             display: flex;
@@ -964,8 +973,12 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
 
           .mobile-cam-pills .cam-chip {
             flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             text-align: center;
-            padding: 7px 10px;
+            padding: 7px 8px;
             font-size: 0.74rem;
           }
 

@@ -352,8 +352,21 @@ export default function WaitlistModal({ isOpen, onClose }) {
         }
 
         @media (max-width: 480px) {
+          .modal-backdrop {
+            padding: 8px;
+          }
+          .waitlist-card {
+            padding: 18px 14px;
+            max-height: 94vh;
+            gap: 12px;
+            border-radius: 14px;
+          }
+          .waitlist-title {
+            font-size: 1.15rem;
+          }
           .form-row-2 {
             grid-template-columns: 1fr;
+            gap: 10px;
           }
         }
 

@@ -169,8 +169,20 @@ export default function DemoIntro({ onEnterDashboard, onBackToHome }) {
         }
 
         @media (max-width: 640px) {
+          .demo-intro-viewport {
+            padding: 24px 10px;
+          }
+          .demo-intro-container {
+            padding: 8px 4px;
+          }
+          .demo-brand-logo {
+            height: 28px;
+          }
           .demo-heading {
-            font-size: 1.85rem;
+            font-size: clamp(1.5rem, 5.5vw, 1.85rem);
+          }
+          .demo-video-container {
+            border-radius: 12px;
           }
         }
 

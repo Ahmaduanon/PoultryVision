@@ -268,6 +268,38 @@ export default function ShedSettings({ activeShed }) {
         input:checked + .switch-slider:before {
           transform: translateX(20px);
         }
+
+        @media (max-width: 640px) {
+          .settings-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            padding: 14px 12px;
+          }
+          .save-btn {
+            width: 100%;
+            justify-content: center;
+          }
+          .settings-body {
+            padding: 14px 10px;
+            gap: 18px;
+          }
+          .control-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+          }
+          .slider-wrap {
+            min-width: 0;
+            width: 100%;
+          }
+          .toggle-row {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+          }
+        }
       `}</style>
     </div>
   );

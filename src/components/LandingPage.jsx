@@ -2028,6 +2028,258 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
           font-size: 0.82rem;
           color: var(--text-muted);
         }
+
+        /* COMPREHENSIVE MOBILE & ANDROID RESPONSIVENESS */
+        @media (max-width: 640px) {
+          .landing-wrapper > section {
+            padding-top: 36px !important;
+            padding-bottom: 36px !important;
+            min-height: auto !important;
+          }
+
+          .section-inner {
+            padding: 0 16px !important;
+          }
+
+          .section-header {
+            margin-bottom: 24px !important;
+            gap: 8px !important;
+          }
+
+          .section-heading {
+            font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+            text-align: center;
+          }
+
+          .section-lead {
+            font-size: 0.90rem !important;
+            line-height: 1.55 !important;
+            text-align: center;
+          }
+
+          /* Hero Mobile */
+          .hero-centered-block {
+            padding: 72px 14px 40px 14px !important;
+            min-height: auto !important;
+          }
+
+          .hero-centered-container {
+            gap: 16px !important;
+          }
+
+          .hero-centered-headline {
+            font-size: clamp(1.65rem, 6.5vw, 2.1rem) !important;
+            line-height: 1.2 !important;
+          }
+
+          .hero-centered-subheadline {
+            font-size: 0.94rem !important;
+            line-height: 1.55 !important;
+          }
+
+          .hero-pill-actions {
+            flex-direction: column !important;
+            width: 100% !important;
+            max-width: 310px !important;
+            gap: 10px !important;
+            margin: 10px auto 0 auto !important;
+          }
+
+          .pill-btn-dark-lg, .pill-btn-outline-lg {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 12px 20px !important;
+            font-size: 0.9rem !important;
+          }
+
+          .hero-trust-badges {
+            gap: 8px !important;
+            margin-top: 10px !important;
+          }
+
+          .trust-badge-item {
+            font-size: 0.74rem !important;
+            padding: 5px 10px !important;
+          }
+
+          /* All Grids enforce single column to prevent horizontal overflow */
+          .problem-grid,
+          .looks-grid,
+          .outcomes-grid,
+          .pillars-grid,
+          .audience-grid,
+          .trust-pillars-grid {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+          }
+
+          /* Cards compact padding */
+          .problem-card,
+          .feature-item-card,
+          .outcome-card,
+          .pillar-card,
+          .audience-card,
+          .trust-pillar-box {
+            padding: 20px 16px !important;
+            border-radius: 16px !important;
+          }
+
+          /* Problem visual */
+          .problem-visual-box {
+            max-height: none !important;
+          }
+
+          .problem-img {
+            height: 280px !important;
+          }
+
+          .visual-overlay-layer {
+            padding: 16px !important;
+          }
+
+          .overlay-quote {
+            font-size: 0.88rem !important;
+            line-height: 1.4 !important;
+          }
+
+          .overlay-metrics-strip {
+            gap: 10px !important;
+            font-size: 0.74rem !important;
+          }
+
+          /* Solution steps */
+          .solution-split {
+            gap: 24px !important;
+          }
+
+          .solution-benefits-list {
+            margin: 16px 0 !important;
+            gap: 10px !important;
+          }
+
+          .step-card {
+            padding: 16px 14px !important;
+            gap: 12px !important;
+          }
+
+          .step-num-pill {
+            padding: 6px 10px !important;
+            font-size: 0.85rem !important;
+          }
+
+          /* Diagram cards (How it works) */
+          .horizontal-diagram-grid {
+            gap: 12px !important;
+          }
+
+          .diagram-card {
+            min-width: 0 !important;
+            width: 100% !important;
+            padding: 22px 18px !important;
+          }
+
+          /* Dashboard preview mockup */
+          .preview-mockup-container {
+            margin-top: 16px !important;
+            border-radius: 14px !important;
+          }
+
+          .mockup-body {
+            padding: 16px 12px !important;
+            gap: 14px !important;
+          }
+
+          .mockup-stats-row {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+          }
+
+          .mockup-stat-card {
+            padding: 12px 10px !important;
+          }
+
+          .mockup-value {
+            font-size: 1.35rem !important;
+          }
+
+          .mockup-zones-bar {
+            grid-template-columns: 1fr !important;
+            padding: 12px 10px !important;
+            gap: 8px !important;
+          }
+
+          /* Early access card */
+          .early-access-card {
+            padding: 36px 18px !important;
+            border-radius: 18px !important;
+            gap: 16px !important;
+            text-align: center;
+          }
+
+          .early-access-actions {
+            flex-direction: column !important;
+            width: 100% !important;
+            max-width: 300px !important;
+            gap: 10px !important;
+          }
+
+          .early-access-actions button,
+          .btn-secondary-white {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 12px 20px !important;
+            font-size: 0.9rem !important;
+          }
+
+          /* FAQ */
+          .faq-item {
+            padding: 16px 14px !important;
+          }
+
+          .faq-question {
+            font-size: 0.92rem !important;
+          }
+
+          /* Footer */
+          .footer-inner {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            gap: 12px !important;
+          }
+        }
+
+        /* Ultra-narrow Android screens (<= 360px: Galaxy A/S small, Fold cover) */
+        @media (max-width: 360px) {
+          .section-inner {
+            padding: 0 10px !important;
+          }
+
+          .hero-centered-headline {
+            font-size: 1.55rem !important;
+          }
+
+          .hero-pill-eyebrow {
+            font-size: 0.74rem !important;
+            padding: 4px 10px !important;
+          }
+
+          .mockup-stats-row {
+            grid-template-columns: 1fr !important;
+          }
+
+          .problem-card,
+          .feature-item-card,
+          .outcome-card,
+          .pillar-card,
+          .audience-card,
+          .trust-pillar-box,
+          .step-card,
+          .diagram-card,
+          .faq-item {
+            padding: 16px 12px !important;
+          }
+        }
       `}</style>
     </div>
   );

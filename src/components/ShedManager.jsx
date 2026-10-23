@@ -354,6 +354,36 @@ export default function ShedManager({ activeShed }) {
           outline: none;
         }
         .form-input:focus { border-color: var(--color-primary); }
+
+        @media (max-width: 640px) {
+          .shed-manager-container {
+            padding: 12px 8px;
+            gap: 14px;
+          }
+          .manager-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+          .add-cam-btn {
+            width: 100%;
+            justify-content: center;
+          }
+          .cameras-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+          .camera-card {
+            padding: 14px 12px;
+          }
+          .cam-name {
+            font-size: 0.88rem;
+          }
+          .cam-metadata-grid {
+            gap: 8px;
+            padding: 10px;
+          }
+        }
       `}</style>
     </div>
   );

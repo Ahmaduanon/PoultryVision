@@ -125,6 +125,15 @@ export default function TelemetryCards({ activeShed }) {
           }
         }
 
+        @media (max-width: 360px) {
+          .telemetry-card {
+            padding: 12px 10px !important;
+          }
+          .card-value {
+            font-size: 1.4rem !important;
+          }
+        }
+
         .telemetry-card {
           padding: 18px 20px;
           display: flex;

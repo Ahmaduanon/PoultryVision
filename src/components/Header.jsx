@@ -374,16 +374,41 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
           @media (max-width: 767px) {
             .landing-header-wrapper {
-              top: 10px;
-              padding: 0 12px;
+              top: 8px;
+              padding: 0 10px;
             }
             .landing-header-pill {
-              height: 52px;
-              padding: 0 6px 0 16px;
+              height: 48px;
+              padding: 0 6px 0 14px;
             }
             .landing-brand-logo {
-              height: 22px;
-              max-width: 125px;
+              height: 20px;
+              max-width: 110px;
+            }
+            .nav-btn-waitlist {
+              padding: 6px 14px;
+              font-size: 0.8rem;
+            }
+            .hamburger-btn {
+              width: 32px;
+              height: 32px;
+            }
+          }
+
+          @media (max-width: 360px) {
+            .landing-header-wrapper {
+              padding: 0 6px;
+            }
+            .landing-header-pill {
+              padding: 0 4px 0 10px;
+            }
+            .landing-brand-logo {
+              height: 18px;
+              max-width: 90px;
+            }
+            .nav-btn-waitlist {
+              padding: 5px 10px;
+              font-size: 0.74rem;
             }
           }
         `}</style>
@@ -780,6 +805,13 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
         }
 
         @media (max-width: 640px) {
+          .header-bar {
+            height: 52px;
+            padding: 0 10px;
+          }
+          .header-left, .header-right {
+            gap: 8px;
+          }
           .header-brand-logo {
             height: 22px;
           }
@@ -790,7 +822,7 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
             display: none !important;
           }
           .shed-selector-container {
-            max-width: 125px;
+            max-width: 120px;
             padding: 4px 6px;
           }
           .shed-select {
@@ -807,6 +839,53 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
           }
           .brand-subtitle, .user-role {
             display: none;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .header-bar {
+            padding: 0 8px;
+          }
+          .header-left, .header-right {
+            gap: 6px;
+          }
+          .header-brand-logo {
+            height: 20px;
+          }
+          .shed-selector-container {
+            max-width: 100px;
+            padding: 3px 5px;
+          }
+          .shed-select {
+            font-size: 0.68rem;
+          }
+          .exit-demo-btn {
+            padding: 4px 6px;
+            font-size: 0.70rem;
+          }
+        }
+
+        @media (max-width: 350px) {
+          .header-bar {
+            padding: 0 6px;
+            height: 48px;
+          }
+          .header-brand-logo {
+            height: 18px;
+          }
+          .exit-btn-text {
+            display: none;
+          }
+          .exit-demo-btn {
+            padding: 6px;
+            border-radius: var(--radius-sm);
+          }
+          .shed-selector-container {
+            max-width: 85px;
+          }
+          .alert-btn {
+            width: 28px;
+            height: 28px;
           }
         }
       `}</style>

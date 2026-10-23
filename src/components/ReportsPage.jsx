@@ -235,6 +235,31 @@ export default function ReportsPage({ activeShed }) {
           font-weight: 700;
           font-size: 0.8rem;
         }
+
+        @media (max-width: 640px) {
+          .reports-container {
+            padding: 12px 8px;
+            gap: 14px;
+          }
+          .reports-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+          .export-btn {
+            width: 100%;
+            justify-content: center;
+          }
+          .reports-table {
+            min-width: 580px;
+          }
+          .table-wrapper {
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+          }
+        }
       `}</style>
     </div>
   );
