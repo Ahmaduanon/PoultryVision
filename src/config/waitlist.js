@@ -4,4 +4,4 @@
 
 export const GOOGLE_SHEET_URL = 
   import.meta.env.VITE_GOOGLE_SHEET_URL || 
-  "";
+  "https://script.google.com/macros/s/AKfycbwqtHoLL5kWNEv71VlLWg9jKf5fH-UdC49otNsFHHSFhNylWZJTL8HaLv_mqW6yZTJrzA/exec";
