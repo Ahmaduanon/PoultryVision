@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { 
   IconUser, IconMail, IconPhone, IconX, 
-  IconArrowRight, IconCircleCheck 
+  IconArrowRight, IconCircleCheck, IconLoader2 
 } from '@tabler/icons-react';
+import { GOOGLE_SHEET_URL } from '../config/waitlist.js';
 
 export default function WaitlistModal({ isOpen, onClose }) {
   const [fullName, setFullName] = useState('');
@@ -12,28 +13,61 @@ export default function WaitlistModal({ isOpen, onClose }) {
   const [flockSize, setFlockSize] = useState('1,000–5,000');
   const [cctvStatus, setCctvStatus] = useState('Yes — IP / NVR System');
   const [challenge, setChallenge] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const submissionPayload = {
+      fullName: fullName.trim(),
+      email: email.trim(),
+      whatsapp: whatsapp.trim() || 'N/A',
+      farmType,
+      flockSize,
+      cctvStatus,
+      challenge: challenge.trim() || 'N/A',
+      submittedAt: new Date().toLocaleString()
+    };
+
+    // 1. Save locally to localStorage as immediate offline-safe backup
     try {
       const existing = JSON.parse(localStorage.getItem('poultryvision_waitlist') || '[]');
-      existing.push({
-        fullName,
-        email,
-        whatsapp,
-        farmType,
-        flockSize,
-        cctvStatus,
-        challenge,
-        submittedAt: new Date().toISOString()
-      });
+      existing.push(submissionPayload);
       localStorage.setItem('poultryvision_waitlist', JSON.stringify(existing));
     } catch {
       // LocalStorage fallback
     }
+
+    // 2. Transmit directly to Google Sheet if Web App URL is configured
+    if (GOOGLE_SHEET_URL && GOOGLE_SHEET_URL.trim() !== '') {
+      try {
+        const formData = new FormData();
+        formData.append('submittedAt', submissionPayload.submittedAt);
+        formData.append('fullName', submissionPayload.fullName);
+        formData.append('email', submissionPayload.email);
+        formData.append('whatsapp', submissionPayload.whatsapp);
+        formData.append('farmType', submissionPayload.farmType);
+        formData.append('flockSize', submissionPayload.flockSize);
+        formData.append('cctvStatus', submissionPayload.cctvStatus);
+        formData.append('challenge', submissionPayload.challenge);
+
+        // mode: 'no-cors' sends a simple POST request without CORS preflight blocking
+        await fetch(GOOGLE_SHEET_URL.trim(), {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        });
+      } catch (err) {
+        console.warn('Google Sheet submission error (saved to localStorage):', err);
+      }
+    }
+
+    setIsSubmitting(false);
     setIsSubmitted(true);
   };
 
@@ -189,9 +223,23 @@ export default function WaitlistModal({ isOpen, onClose }) {
               </div>
 
               {/* Submit Button */}
-              <button type="submit" className="waitlist-submit-btn">
-                <span>Join the waitlist</span>
-                <IconArrowRight size={18} />
+              <button 
+                type="submit" 
+                className="waitlist-submit-btn"
+                disabled={isSubmitting}
+                style={{ opacity: isSubmitting ? 0.75 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+              >
+                {isSubmitting ? (
+                  <>
+                    <IconLoader2 size={18} className="spin-animation" />
+                    <span>Adding you to waitlist...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Join the waitlist</span>
+                    <IconArrowRight size={18} />
+                  </>
+                )}
               </button>
             </form>
           </>
@@ -469,6 +517,14 @@ export default function WaitlistModal({ isOpen, onClose }) {
 
         .waitlist-submit-btn:active {
           transform: translateY(0);
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .spin-animation {
+          animation: spin 1s linear infinite;
         }
 
         .success-container {
