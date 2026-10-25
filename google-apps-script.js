@@ -1,23 +1,41 @@
 /**
  * PoultryVision - Google Sheets Waitlist Backend
- * -------------------------------------------------------------
+ * ---------------------------------------------------------------------------
  * INSTRUCTIONS:
- * 1. Open Google Sheets (create a new blank sheet e.g. "PoultryVision Waitlist").
- * 2. In the top menu, click Extensions > Apps Script.
- * 3. Delete any default code in the editor, and paste this ENTIRE file.
- * 4. Click "Save" (disk icon).
- * 5. Click "Deploy" (top right) > "New deployment".
- * 6. Under "Select type" (gear icon), select "Web app".
- * 7. Set:
- *    - Description: "PoultryVision Waitlist API"
- *    - Execute as: "Me" (your email)
- *    - Who has access: "Anyone" (crucial so your website can send entries)
- * 8. Click "Deploy", authorize access with your Google account.
- * 9. Copy the "Web app URL" (looks like https://script.google.com/macros/s/.../exec).
- * 10. Paste it into your project's .env file (VITE_GOOGLE_SHEET_URL=your_url)
- *     or directly into src/config/waitlist.js.
- * -------------------------------------------------------------
+ * 
+ * IF YOU CREATED THIS SCRIPT DIRECTLY AT script.google.com (STANDALONE):
+ * 1. Open Google Sheets (https://sheets.new) and create a sheet (name it "PoultryVision Waitlist").
+ * 2. Copy the URL of your sheet from the browser address bar.
+ * 3. Paste it below into SPREADSHEET_URL_OR_ID.
+ * 4. Click Save, then click "Deploy" > "Manage deployments" > Edit (pencil icon) > 
+ *    select "New version" > click "Deploy".
+ * 
+ * IF YOU CREATED IT FROM INSIDE A SHEET (Extensions > Apps Script):
+ * - Leave SPREADSHEET_URL_OR_ID as "" (blank). It links automatically.
+ * ---------------------------------------------------------------------------
  */
+
+// Paste your Google Sheet URL or Sheet ID here if you created a standalone script at script.google.com
+var SPREADSHEET_URL_OR_ID = ""; // e.g. "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+
+function getTargetSpreadsheet() {
+  if (SPREADSHEET_URL_OR_ID && SPREADSHEET_URL_OR_ID.trim() !== "") {
+    var input = SPREADSHEET_URL_OR_ID.trim();
+    if (input.indexOf("http") === 0) {
+      return SpreadsheetApp.openByUrl(input);
+    }
+    return SpreadsheetApp.openById(input);
+  }
+
+  // Fallback to active container-bound sheet
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (!active) {
+    throw new Error(
+      "No Google Sheet is connected. Please paste your Google Sheet URL into SPREADSHEET_URL_OR_ID at the top of the script."
+    );
+  }
+  return active;
+}
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -25,7 +43,7 @@ function doPost(e) {
   lock.tryLock(30000);
 
   try {
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
+    var doc = getTargetSpreadsheet();
     var sheet = doc.getActiveSheet();
 
     // If the sheet is brand new, automatically create the bold header row
@@ -105,7 +123,14 @@ function doPost(e) {
 
 // Simple test to verify the Web App is working when visited in a browser
 function doGet(e) {
-  return ContentService
-    .createTextOutput("PoultryVision Waitlist Endpoint is active and listening for submissions.")
-    .setMimeType(ContentService.MimeType.TEXT);
+  try {
+    var doc = getTargetSpreadsheet();
+    return ContentService
+      .createTextOutput("PoultryVision Waitlist Endpoint is active and connected to: " + doc.getName())
+      .setMimeType(ContentService.MimeType.TEXT);
+  } catch (err) {
+    return ContentService
+      .createTextOutput("PoultryVision Waitlist Script is running, but needs a Google Sheet: " + err.message)
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
 }
