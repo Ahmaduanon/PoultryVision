@@ -100,6 +100,7 @@ export default function DemoIntro({ onEnterDashboard, onBackToHome }) {
       <style>{`
         .demo-intro-viewport {
           min-height: 100vh;
+          min-height: 100dvh;
           width: 100%;
           display: flex;
           align-items: center;
@@ -110,7 +111,7 @@ export default function DemoIntro({ onEnterDashboard, onBackToHome }) {
             radial-gradient(circle at 85% 65%, rgba(16, 185, 129, 0.05), transparent 40%),
             radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
           background-size: 100% 100%, 100% 100%, 28px 28px;
-          padding: 40px 20px;
+          padding: max(40px, calc(20px + var(--safe-top))) max(20px, var(--safe-right)) max(40px, calc(20px + var(--safe-bottom))) max(20px, var(--safe-left));
           box-sizing: border-box;
           position: relative;
         }
@@ -160,7 +161,7 @@ export default function DemoIntro({ onEnterDashboard, onBackToHome }) {
         }
 
         .demo-heading {
-          font-size: 2.4rem;
+          font-size: clamp(1.8rem, 4vw + 0.5rem, 2.6rem);
           font-weight: 800;
           line-height: 1.2;
           letter-spacing: -0.025em;
@@ -170,7 +171,7 @@ export default function DemoIntro({ onEnterDashboard, onBackToHome }) {
 
         @media (max-width: 640px) {
           .demo-intro-viewport {
-            padding: 24px 10px;
+            padding: max(24px, calc(12px + var(--safe-top))) max(12px, var(--safe-right)) max(24px, calc(12px + var(--safe-bottom))) max(12px, var(--safe-left));
           }
           .demo-intro-container {
             padding: 8px 4px;

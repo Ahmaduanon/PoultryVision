@@ -280,7 +280,10 @@ export default function WaitlistModal({ isOpen, onClose }) {
           align-items: center;
           justify-content: center;
           z-index: 120;
-          padding: 16px;
+          padding-top: max(16px, var(--safe-top));
+          padding-bottom: max(16px, var(--safe-bottom));
+          padding-left: max(16px, var(--safe-left));
+          padding-right: max(16px, var(--safe-right));
         }
 
         .waitlist-card {
@@ -294,6 +297,7 @@ export default function WaitlistModal({ isOpen, onClose }) {
           flex-direction: column;
           gap: 16px;
           max-height: 92vh;
+          max-height: 92dvh;
           overflow-y: auto;
           animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -401,11 +405,15 @@ export default function WaitlistModal({ isOpen, onClose }) {
 
         @media (max-width: 480px) {
           .modal-backdrop {
-            padding: 8px;
+            padding-top: max(8px, var(--safe-top));
+            padding-bottom: max(8px, var(--safe-bottom));
+            padding-left: max(8px, var(--safe-left));
+            padding-right: max(8px, var(--safe-right));
           }
           .waitlist-card {
             padding: 18px 14px;
             max-height: 94vh;
+            max-height: 94dvh;
             gap: 12px;
             border-radius: 14px;
           }

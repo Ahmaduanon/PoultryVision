@@ -178,6 +178,7 @@ export default function App() {
       <style>{`
         .app-container {
           min-height: 100vh;
+          min-height: 100dvh;
           display: flex;
           flex-direction: column;
           background-color: var(--bg-app);
@@ -187,6 +188,8 @@ export default function App() {
         @media (max-width: 767px) {
           .app-container:not(.on-landing) {
             padding-bottom: calc(var(--bottom-nav-height) + 16px);
+            padding-left: max(0px, var(--safe-left));
+            padding-right: max(0px, var(--safe-right));
           }
         }
 
@@ -213,12 +216,12 @@ export default function App() {
         .single-view-container {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 24px;
+          padding: clamp(12px, 3vw, 24px);
         }
 
         @media (max-width: 640px) {
           .single-view-container {
-            padding: 16px;
+            padding: clamp(8px, 2.5vw, 16px);
           }
         }
       `}</style>

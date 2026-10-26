@@ -877,11 +877,12 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
         /* Subtle technical background grid accents on sections */
         .landing-wrapper > section {
           min-height: 100vh;
+          min-height: 100svh;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding-top: 64px;
-          padding-bottom: 64px;
+          padding-top: clamp(40px, 5vw, 64px);
+          padding-bottom: clamp(40px, 5vw, 64px);
           box-sizing: border-box;
           position: relative;
         }
@@ -899,8 +900,8 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
           .landing-wrapper > section {
             min-height: auto;
             min-height: 100svh;
-            padding-top: 48px;
-            padding-bottom: 48px;
+            padding-top: clamp(32px, 4vw, 48px);
+            padding-bottom: clamp(32px, 4vw, 48px);
           }
         }
 
@@ -933,10 +934,11 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
         .hero-centered-block {
           position: relative;
           min-height: 100vh;
+          min-height: 100svh;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 100px 24px 60px 24px;
+          padding: clamp(76px, 8vw + 24px, 110px) max(20px, var(--safe-right)) clamp(40px, 6vw, 60px) max(20px, var(--safe-left));
           overflow: hidden;
         }
 
@@ -983,17 +985,11 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
         }
 
         .hero-centered-headline {
-          font-size: 2.5rem;
+          font-size: clamp(1.85rem, 5vw + 0.6rem, 3.6rem);
           font-weight: 800;
           line-height: 1.15;
           letter-spacing: -0.03em;
           color: #0F172A;
-        }
-
-        @media (min-width: 768px) {
-          .hero-centered-headline {
-            font-size: 3.6rem;
-          }
         }
 
         .hidden-mobile {
@@ -1004,7 +1000,7 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
         }
 
         .hero-centered-subheadline {
-          font-size: 1.1rem;
+          font-size: clamp(0.95rem, 1.2vw + 0.5rem, 1.15rem);
           color: #475569;
           max-width: 700px;
           line-height: 1.6;
@@ -1096,14 +1092,8 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
         .section-inner {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 24px;
+          padding: 0 max(clamp(16px, 3vw, 48px), var(--safe-right)) 0 max(clamp(16px, 3vw, 48px), var(--safe-left));
           width: 100%;
-        }
-
-        @media (min-width: 768px) {
-          .section-inner {
-            padding: 0 48px;
-          }
         }
 
         .section-header {
@@ -1111,33 +1101,23 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
           flex-direction: column;
           align-items: center;
           gap: 12px;
-          margin-bottom: 48px;
+          margin-bottom: clamp(28px, 4vw, 48px);
         }
 
         .section-heading {
-          font-size: 2rem;
+          font-size: clamp(1.6rem, 3.5vw + 0.5rem, 2.8rem);
           font-weight: 800;
           letter-spacing: -0.02em;
           color: var(--text-primary);
-        }
-
-        @media (min-width: 768px) {
-          .section-heading {
-            font-size: 2.8rem;
-          }
+          text-align: center;
         }
 
         .section-lead {
-          font-size: 1.05rem;
+          font-size: clamp(0.92rem, 1.2vw + 0.5rem, 1.15rem);
           color: var(--text-secondary);
           line-height: 1.7;
           max-width: 800px;
-        }
-
-        @media (min-width: 768px) {
-          .section-lead {
-            font-size: 1.15rem;
-          }
+          text-align: center;
         }
 
         .max-w-600 { max-width: 600px; }
@@ -1428,18 +1408,18 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
 
         /* 4. HOW IT WORKS */
         .horizontal-diagram-grid {
-          display: flex;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
           align-items: stretch;
-          justify-content: center;
           gap: 18px;
-          flex-wrap: wrap;
           margin-top: 28px;
+          width: 100%;
         }
 
         .diagram-card {
-          flex: 1;
-          min-width: 260px;
-          padding: 36px 26px;
+          min-width: 0;
+          width: 100%;
+          padding: clamp(22px, 3.5vw, 36px) clamp(16px, 2.5vw, 26px);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -2004,7 +1984,7 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
         .footer-bar {
           background: #FFFFFF;
           border-top: 1px solid var(--border-light);
-          padding: 28px 20px;
+          padding: 28px max(20px, var(--safe-right)) max(28px, var(--safe-bottom)) max(20px, var(--safe-left));
           margin-top: 40px;
         }
 

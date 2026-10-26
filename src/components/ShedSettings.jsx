@@ -209,7 +209,8 @@ export default function ShedSettings({ activeShed }) {
           display: flex;
           align-items: center;
           gap: 12px;
-          min-width: 200px;
+          min-width: min(100%, 200px);
+          flex: 1;
         }
 
         .custom-slider {

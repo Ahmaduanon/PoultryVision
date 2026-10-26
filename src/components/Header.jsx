@@ -112,13 +112,14 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
         <style>{`
           .landing-header-wrapper {
             position: fixed;
-            top: 16px;
+            top: calc(16px + var(--safe-top));
             left: 0;
             right: 0;
             z-index: 90;
             display: flex;
             justify-content: center;
-            padding: 0 20px;
+            padding-left: max(20px, var(--safe-left));
+            padding-right: max(20px, var(--safe-right));
             pointer-events: none;
           }
 
@@ -374,8 +375,9 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
           @media (max-width: 767px) {
             .landing-header-wrapper {
-              top: 8px;
-              padding: 0 10px;
+              top: calc(8px + var(--safe-top));
+              padding-left: max(10px, var(--safe-left));
+              padding-right: max(10px, var(--safe-right));
             }
             .landing-header-pill {
               height: 48px;
@@ -397,7 +399,8 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
           @media (max-width: 360px) {
             .landing-header-wrapper {
-              padding: 0 6px;
+              padding-left: max(6px, var(--safe-left));
+              padding-right: max(6px, var(--safe-right));
             }
             .landing-header-pill {
               padding: 0 4px 0 10px;
@@ -508,10 +511,12 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
       <style>{`
         .cursor-pointer { cursor: pointer; }
         .header-bar {
-          height: var(--header-height);
+          height: calc(var(--header-height) + var(--safe-top));
+          padding-top: var(--safe-top);
+          padding-left: max(14px, var(--safe-left));
+          padding-right: max(14px, var(--safe-right));
           background-color: var(--bg-card);
           border-bottom: 1px solid var(--border-light);
-          padding: 0 14px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -523,7 +528,8 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
         @media (min-width: 640px) {
           .header-bar {
-            padding: 0 24px;
+            padding-left: max(24px, var(--safe-left));
+            padding-right: max(24px, var(--safe-right));
           }
         }
 
@@ -806,8 +812,10 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
         @media (max-width: 640px) {
           .header-bar {
-            height: 52px;
-            padding: 0 10px;
+            height: calc(52px + var(--safe-top));
+            padding-top: var(--safe-top);
+            padding-left: max(10px, var(--safe-left));
+            padding-right: max(10px, var(--safe-right));
           }
           .header-left, .header-right {
             gap: 8px;
@@ -844,7 +852,8 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
         @media (max-width: 420px) {
           .header-bar {
-            padding: 0 8px;
+            padding-left: max(8px, var(--safe-left));
+            padding-right: max(8px, var(--safe-right));
           }
           .header-left, .header-right {
             gap: 6px;
@@ -867,8 +876,9 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
 
         @media (max-width: 350px) {
           .header-bar {
-            padding: 0 6px;
-            height: 48px;
+            height: calc(48px + var(--safe-top));
+            padding-left: max(6px, var(--safe-left));
+            padding-right: max(6px, var(--safe-right));
           }
           .header-brand-logo {
             height: 18px;

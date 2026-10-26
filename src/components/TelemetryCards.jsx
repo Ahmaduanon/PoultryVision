@@ -218,7 +218,7 @@ export default function TelemetryCards({ activeShed }) {
         }
 
         .card-value {
-          font-size: 1.85rem;
+          font-size: clamp(1.4rem, 2.5vw + 0.6rem, 1.85rem);
           font-weight: 800;
           letter-spacing: -0.02em;
           color: #0F172A;

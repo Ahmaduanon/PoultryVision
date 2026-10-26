@@ -696,7 +696,7 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
           color: #475569;
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          min-width: 155px;
+          min-width: min(100%, 155px);
           flex-shrink: 0;
         }
 

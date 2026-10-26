@@ -591,8 +591,9 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
             font-size: 0.88rem;
           }
           .modal-content {
-            width: 94%;
+            width: min(94%, 540px);
             max-height: 88vh;
+            max-height: 88dvh;
             border-radius: 16px;
             overflow-y: auto;
           }
