@@ -41,9 +41,8 @@ export default function BottomNav({ activeTab, setActiveTab, alertCount }) {
           left: 0;
           right: 0;
           height: var(--bottom-nav-height);
-          padding-bottom: max(4px, var(--safe-bottom));
-          padding-left: max(8px, var(--safe-left));
-          padding-right: max(8px, var(--safe-right));
+          padding-bottom: var(--safe-bottom);
+          box-sizing: border-box;
           background-color: #FFFFFF;
           border-top: 1px solid var(--border-light);
           z-index: 50;

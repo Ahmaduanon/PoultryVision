@@ -355,17 +355,25 @@ export default function BehavioralAnalytics({ activeShed }) {
           .analytics-header {
             padding: 12px 14px;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
             gap: 10px;
           }
 
-          .header-controls {
+          .range-controls {
             width: 100%;
+            display: flex;
+            align-items: center;
             justify-content: space-between;
+            gap: 8px;
           }
 
           .chart-body {
             padding: 12px 14px 16px 14px;
+          }
+
+          .chart-legend {
+            gap: 8px 12px;
+            font-size: 0.70rem;
           }
 
           .svg-chart-container {
@@ -389,6 +397,26 @@ export default function BehavioralAnalytics({ activeShed }) {
           .analytics-summary-row {
             grid-template-columns: 1fr;
             gap: 8px;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .range-pills {
+            padding: 2px;
+          }
+          .range-btn {
+            padding: 4px 6px;
+            font-size: 0.68rem;
+          }
+          .export-btn {
+            padding: 5px 8px;
+            font-size: 0.68rem;
+          }
+          .analytics-title {
+            font-size: 0.92rem;
+          }
+          .analytics-subtitle {
+            font-size: 0.68rem;
           }
         }
 

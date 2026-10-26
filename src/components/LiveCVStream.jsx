@@ -264,7 +264,9 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
         <div className="stream-hud-bar">
           <div className="hud-badge-left">
             <span className="live-dot pulse-red"></span>
-            <span className="hud-text">LIVE NVR • {activeCam.toUpperCase()} <span className="hud-extra-tag">• 1080P 30FPS</span></span>
+            <span className="hud-text">
+              <span className="hud-full-nvr">LIVE NVR • </span>{activeCam.toUpperCase()} <span className="hud-extra-tag">• 1080P 30FPS</span>
+            </span>
           </div>
 
           <div className="hud-actions-right">
@@ -273,8 +275,8 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
               onClick={togglePlay}
               title={isPlaying ? 'Pause CCTV Stream' : 'Play CCTV Stream'}
             >
-              {isPlaying ? <IconPlayerPause size={15} /> : <IconPlayerPlay size={15} />}
-              <span>{isPlaying ? 'PAUSE' : 'PLAY'}</span>
+              {isPlaying ? <IconPlayerPause size={14} /> : <IconPlayerPlay size={14} />}
+              <span className="hud-btn-txt">{isPlaying ? 'PAUSE' : 'PLAY'}</span>
             </button>
           </div>
         </div>
@@ -696,7 +698,7 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
           color: #475569;
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          min-width: min(100%, 155px);
+          min-width: 155px;
           flex-shrink: 0;
         }
 
@@ -887,13 +889,13 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
           display: none;
         }
 
-        @media (max-width: 767px) {
+        @media (max-width: 1023px) {
           .desktop-controls-layout {
-            display: none;
+            display: none !important;
           }
 
           .mobile-controls-layout {
-            display: flex;
+            display: flex !important;
             flex-direction: column;
             background: #FFFFFF;
           }
@@ -954,12 +956,6 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
 
           .mobile-segment-content {
             padding: 8px 12px 14px 12px;
-          }
-
-          @media (max-width: 480px) {
-            .hud-extra-tag {
-              display: none;
-            }
           }
 
           /* Mobile Cameras View */
@@ -1042,6 +1038,52 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
             padding: 9px 14px;
             font-size: 0.78rem;
             border-radius: 10px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hud-full-nvr {
+            display: none !important;
+          }
+          .hud-extra-tag {
+            display: none !important;
+          }
+          .hud-badge-left {
+            padding: 3px 8px !important;
+            font-size: 0.64rem !important;
+            gap: 5px !important;
+          }
+          .hud-control-btn {
+            padding: 3px 8px !important;
+            font-size: 0.64rem !important;
+            gap: 4px !important;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .mobile-segment-bar {
+            margin: 6px 6px 4px 6px !important;
+            padding: 2px !important;
+            gap: 2px !important;
+          }
+          .segment-btn {
+            padding: 6px 4px !important;
+            font-size: 0.70rem !important;
+            gap: 3px !important;
+          }
+          .mobile-segment-content {
+            padding: 6px 6px 10px 6px !important;
+          }
+          .mobile-layers-grid {
+            gap: 6px !important;
+          }
+          .mobile-layers-grid .layer-toggle-btn {
+            padding: 7px 8px !important;
+            font-size: 0.70rem !important;
+          }
+          .mobile-sim-stack .sim-action-btn {
+            padding: 7px 10px !important;
+            font-size: 0.72rem !important;
           }
         }
       `}</style>

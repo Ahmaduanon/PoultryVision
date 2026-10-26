@@ -58,7 +58,7 @@ export default function ReportsPage({ activeShed }) {
 
         <button className="export-btn touch-target" onClick={handleExport}>
           <IconDownload size={16} />
-          <span>{exportSuccess ? 'Report Downloaded!' : 'Export Report (PDF/CSV)'}</span>
+          <span>{exportSuccess ? 'Report Downloaded!' : 'Export All Reports'}</span>
         </button>
       </div>
 
@@ -79,8 +79,8 @@ export default function ReportsPage({ activeShed }) {
           </div>
         </div>
 
-        {/* Reports Table */}
-        <div className="table-wrapper">
+        {/* 1. Desktop Table View (>= 768px) */}
+        <div className="desktop-table-wrapper">
           <table className="reports-table">
             <thead>
               <tr>
@@ -112,6 +112,41 @@ export default function ReportsPage({ activeShed }) {
             </tbody>
           </table>
         </div>
+
+        {/* 2. Mobile Responsive Report Cards (< 768px) */}
+        <div className="mobile-reports-cards">
+          {reportsList.map((rep) => (
+            <div key={rep.id} className="mobile-report-card">
+              <div className="card-top-row">
+                <div className="id-date-wrap">
+                  <span className="font-mono report-id-pill">{rep.id}</span>
+                  <span className="font-mono report-date">{rep.date}</span>
+                </div>
+                <span className="badge badge-success">{rep.mortalityRisk}</span>
+              </div>
+
+              <div className="card-metrics-grid">
+                <div className="metric-tile">
+                  <span className="tile-lbl">Shed Unit</span>
+                  <span className="tile-val">{rep.shed}</span>
+                </div>
+                <div className="metric-tile">
+                  <span className="tile-lbl">Activity Index</span>
+                  <span className="tile-val font-mono text-lime-700">{rep.activityAvg}</span>
+                </div>
+                <div className="metric-tile">
+                  <span className="tile-lbl">Huddling Alerts</span>
+                  <span className="tile-val font-mono">{rep.huddlingAlerts}</span>
+                </div>
+              </div>
+
+              <button className="mobile-download-btn" onClick={handleExport}>
+                <IconDownload size={14} />
+                <span>Download Report (PDF/CSV)</span>
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       <style>{`
@@ -122,6 +157,11 @@ export default function ReportsPage({ activeShed }) {
           padding: 24px;
           max-width: 1400px;
           margin: 0 auto;
+          width: 100%;
+          box-sizing: border-box;
+          background: #FFFFFF;
+          border: 1px solid var(--border-light);
+          border-radius: var(--radius-lg);
         }
 
         .reports-header {
@@ -148,11 +188,14 @@ export default function ReportsPage({ activeShed }) {
           display: flex;
           align-items: center;
           justify-content: center;
+          flex-shrink: 0;
         }
 
         .reports-title {
           font-size: 1.2rem;
           font-weight: 800;
+          color: #0F172A;
+          line-height: 1.2;
         }
 
         .reports-subtitle {
@@ -168,17 +211,21 @@ export default function ReportsPage({ activeShed }) {
           font-weight: 700;
           padding: 10px 18px;
           border-radius: var(--radius-md);
-          background: var(--color-primary);
+          background: #0F172A;
           color: white;
+          transition: background 0.2s;
+        }
+        .export-btn:hover {
+          background: #1E293B;
         }
 
         .filter-bar {
-          background: var(--bg-app);
-          padding: 12px 16px;
+          background: #F8FAFC;
+          padding: 10px 14px;
           border-radius: var(--radius-md);
           border: 1px solid var(--border-light);
           display: flex;
-          gap: 12px;
+          align-items: center;
           margin-bottom: 16px;
         }
 
@@ -186,6 +233,7 @@ export default function ReportsPage({ activeShed }) {
           display: flex;
           align-items: center;
           gap: 8px;
+          width: 100%;
         }
 
         .filter-select {
@@ -197,10 +245,14 @@ export default function ReportsPage({ activeShed }) {
           color: var(--text-primary);
           outline: none;
           cursor: pointer;
+          width: 100%;
         }
 
-        .table-wrapper {
+        /* Desktop Table View */
+        .desktop-table-wrapper {
+          display: block;
           overflow-x: auto;
+          width: 100%;
         }
 
         .reports-table {
@@ -236,28 +288,148 @@ export default function ReportsPage({ activeShed }) {
           font-size: 0.8rem;
         }
 
-        @media (max-width: 640px) {
+        /* Mobile Report Cards View */
+        .mobile-reports-cards {
+          display: none;
+        }
+
+        @media (max-width: 767px) {
           .reports-container {
-            padding: 12px 8px;
+            padding: 14px 12px;
             gap: 14px;
+            border-radius: var(--radius-md);
           }
+
           .reports-header {
             flex-direction: column;
             align-items: stretch;
             gap: 12px;
+            padding-bottom: 12px;
           }
+
+          .reports-title {
+            font-size: 1.05rem;
+          }
+
+          .reports-subtitle {
+            font-size: 0.76rem;
+          }
+
           .export-btn {
             width: 100%;
             justify-content: center;
+            padding: 10px 14px;
+            font-size: 0.82rem;
           }
-          .reports-table {
-            min-width: 580px;
+
+          .desktop-table-wrapper {
+            display: none !important;
           }
-          .table-wrapper {
-            -webkit-overflow-scrolling: touch;
-            width: 100%;
-            border-radius: var(--radius-md);
+
+          .mobile-reports-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .mobile-report-card {
+            background: #F8FAFC;
             border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+          }
+
+          .id-date-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+
+          .report-id-pill {
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #0F172A;
+            background: #E2E8F0;
+            padding: 2px 7px;
+            border-radius: 6px;
+          }
+
+          .report-date {
+            font-size: 0.72rem;
+            color: #64748B;
+          }
+
+          .card-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: #FFFFFF;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+          }
+
+          .metric-tile {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+          }
+
+          .tile-lbl {
+            font-size: 0.64rem;
+            color: #64748B;
+            font-weight: 600;
+            text-transform: uppercase;
+          }
+
+          .tile-val {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #0F172A;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .mobile-download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 8px 12px;
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #1E293B;
+            cursor: pointer;
+            transition: all 0.15s ease;
+          }
+          .mobile-download-btn:hover {
+            background: #F1F5F9;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .reports-container {
+            padding: 10px 8px;
+          }
+
+          .card-metrics-grid {
+            grid-template-columns: 1fr;
+            gap: 6px;
           }
         }
       `}</style>

@@ -591,9 +591,8 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
             font-size: 0.88rem;
           }
           .modal-content {
-            width: min(94%, 540px);
+            width: 94%;
             max-height: 88vh;
-            max-height: 88dvh;
             border-radius: 16px;
             overflow-y: auto;
           }
@@ -619,6 +618,22 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
           .modal-btn {
             width: 100%;
             justify-content: center;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .alert-header {
+            padding: 10px 10px;
+          }
+          .filter-btn {
+            padding: 4px 8px;
+            font-size: 0.70rem;
+          }
+          .alert-item {
+            padding: 10px;
+          }
+          .alert-item-title {
+            font-size: 0.82rem;
           }
         }
       `}</style>
