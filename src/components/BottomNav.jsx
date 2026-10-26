@@ -3,11 +3,11 @@ import { IconHome, IconCamera, IconBell, IconServer, IconFileAnalytics } from '@
 
 export default function BottomNav({ activeTab, setActiveTab, alertCount }) {
   const tabs = [
-    { id: 'landing', label: 'Home', icon: IconHome },
-    { id: 'dashboard', label: 'Live CCTV', icon: IconCamera },
-    { id: 'cameras', label: 'Pens', icon: IconServer },
-    { id: 'alerts', label: 'Alerts', icon: IconBell, badge: alertCount },
-    { id: 'reports', label: 'Reports', icon: IconFileAnalytics },
+    { id: 'landing', label: 'Home', shortLabel: 'Home', icon: IconHome },
+    { id: 'dashboard', label: 'Live CCTV', shortLabel: 'Live', icon: IconCamera },
+    { id: 'cameras', label: 'Pens', shortLabel: 'Pens', icon: IconServer },
+    { id: 'alerts', label: 'Alerts', shortLabel: 'Alerts', icon: IconBell, badge: alertCount },
+    { id: 'reports', label: 'Reports', shortLabel: 'Reports', icon: IconFileAnalytics },
   ];
 
   return (
@@ -28,7 +28,10 @@ export default function BottomNav({ activeTab, setActiveTab, alertCount }) {
                   <span className="nav-badge">{tab.badge}</span>
                 )}
               </div>
-              <span className="nav-label">{tab.label}</span>
+              <span className="nav-label">
+                <span className="label-full">{tab.label}</span>
+                <span className="label-short">{tab.shortLabel}</span>
+              </span>
             </button>
           );
         })}
@@ -76,8 +79,29 @@ export default function BottomNav({ activeTab, setActiveTab, alertCount }) {
           border: none;
           color: var(--text-muted);
           cursor: pointer;
-          padding: 6px 12px;
+          padding: 6px 8px;
+          min-width: 0;
+          flex: 1;
           transition: color 0.2s;
+        }
+
+        .label-short {
+          display: none;
+        }
+
+        @media (max-width: 420px) {
+          .label-full {
+            display: none !important;
+          }
+          .label-short {
+            display: inline !important;
+          }
+          .nav-item {
+            padding: 4px 2px;
+          }
+          .nav-label {
+            font-size: 0.66rem;
+          }
         }
 
         .nav-item.active {

@@ -842,46 +842,54 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
           }
         }
 
-        @media (max-width: 420px) {
+        @media (max-width: 480px) {
           .header-bar {
             padding: 0 8px;
+            height: 50px;
           }
           .header-left, .header-right {
             gap: 6px;
           }
           .header-brand-logo {
             height: 20px;
+            max-width: 100px;
           }
           .shed-selector-container {
-            max-width: 100px;
+            max-width: 95px;
             padding: 3px 5px;
+            gap: 4px;
           }
           .shed-select {
             font-size: 0.68rem;
           }
+          .exit-btn-text {
+            display: none !important;
+          }
           .exit-demo-btn {
-            padding: 4px 6px;
-            font-size: 0.70rem;
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+          }
+          .alert-btn {
+            width: 30px;
+            height: 30px;
           }
         }
 
-        @media (max-width: 350px) {
+        @media (max-width: 360px) {
           .header-bar {
-            padding: 0 6px;
+            padding: 0 5px;
             height: 48px;
+          }
+          .header-left, .header-right {
+            gap: 4px;
           }
           .header-brand-logo {
             height: 18px;
-          }
-          .exit-btn-text {
-            display: none;
-          }
-          .exit-demo-btn {
-            padding: 6px;
-            border-radius: var(--radius-sm);
+            max-width: 85px;
           }
           .shed-selector-container {
-            max-width: 85px;
+            max-width: 80px;
+            padding: 2px 4px;
           }
           .alert-btn {
             width: 28px;

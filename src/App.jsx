@@ -205,13 +205,17 @@ export default function App() {
         .main-pane {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 16px;
+          min-width: 0;
+          width: 100%;
         }
 
         .side-pane {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 16px;
+          min-width: 0;
+          width: 100%;
         }
 
         .single-view-container {

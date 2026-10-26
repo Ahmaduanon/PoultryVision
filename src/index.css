@@ -243,12 +243,14 @@ button {
 /* Responsive Container Grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
   padding: 8px;
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 @media (min-width: 480px) {
@@ -267,7 +269,7 @@ button {
 
 @media (min-width: 1024px) {
   .dashboard-grid {
-    grid-template-columns: 2.2fr 1fr;
+    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
     padding: 24px;
     gap: 20px;
   }

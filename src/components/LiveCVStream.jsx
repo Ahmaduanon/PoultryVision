@@ -426,7 +426,7 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
               onClick={() => setMobileControlTab('cameras')}
             >
               <IconCamera size={14} />
-              <span>Cameras</span>
+              <span><span className="tab-long">Cameras</span><span className="tab-short">Cams</span></span>
             </button>
             <button 
               type="button"
@@ -434,7 +434,7 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
               onClick={() => setMobileControlTab('layers')}
             >
               <IconScan size={14} />
-              <span>AI Layers</span>
+              <span><span className="tab-long">AI Layers</span><span className="tab-short">Layers</span></span>
             </button>
             <button 
               type="button"
@@ -442,7 +442,7 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
               onClick={() => setMobileControlTab('simulate')}
             >
               <IconAdjustments size={14} />
-              <span>Simulate</span>
+              <span><span className="tab-long">Simulate</span><span className="tab-short">Sim</span></span>
             </button>
           </div>
 
@@ -931,20 +931,25 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
 
           .segment-btn {
             flex: 1;
+            min-width: 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 7px 10px;
+            padding: 7px 8px;
             border-radius: 8px;
             border: none;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 600;
             color: #64748B;
             background: transparent;
             cursor: pointer;
             transition: all 0.15s ease;
             white-space: nowrap;
+          }
+
+          .tab-short {
+            display: none;
           }
 
           .segment-btn.active {
@@ -1042,6 +1047,26 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
         }
 
         @media (max-width: 480px) {
+          .tab-long {
+            display: none !important;
+          }
+          .tab-short {
+            display: inline !important;
+          }
+          .mobile-segment-bar {
+            margin: 6px 8px 4px 8px !important;
+            padding: 3px !important;
+            gap: 3px !important;
+          }
+          .segment-btn {
+            padding: 6px 4px !important;
+            font-size: 0.72rem !important;
+            gap: 3px !important;
+            min-width: 0 !important;
+          }
+          .mobile-segment-content {
+            padding: 6px 8px 10px 8px !important;
+          }
           .hud-full-nvr {
             display: none !important;
           }
@@ -1058,32 +1083,34 @@ export default function LiveCVStream({ activeShed, onTriggerAlert }) {
             font-size: 0.64rem !important;
             gap: 4px !important;
           }
-        }
-
-        @media (max-width: 360px) {
-          .mobile-segment-bar {
-            margin: 6px 6px 4px 6px !important;
-            padding: 2px !important;
-            gap: 2px !important;
-          }
-          .segment-btn {
-            padding: 6px 4px !important;
-            font-size: 0.70rem !important;
-            gap: 3px !important;
-          }
-          .mobile-segment-content {
-            padding: 6px 6px 10px 6px !important;
-          }
           .mobile-layers-grid {
             gap: 6px !important;
           }
           .mobile-layers-grid .layer-toggle-btn {
             padding: 7px 8px !important;
             font-size: 0.70rem !important;
+            min-width: 0 !important;
           }
           .mobile-sim-stack .sim-action-btn {
             padding: 7px 10px !important;
             font-size: 0.72rem !important;
+            min-width: 0 !important;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .mobile-segment-bar {
+            margin: 4px 4px 3px 4px !important;
+            padding: 2px !important;
+            gap: 2px !important;
+          }
+          .segment-btn {
+            padding: 5px 3px !important;
+            font-size: 0.68rem !important;
+            gap: 2px !important;
+          }
+          .mobile-segment-content {
+            padding: 4px 4px 8px 4px !important;
           }
         }
       `}</style>

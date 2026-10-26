@@ -305,6 +305,8 @@ export default function BehavioralAnalytics({ activeShed }) {
           gap: 4px;
           border-bottom: 1px solid var(--border-light);
           padding-bottom: 6px;
+          min-width: 0;
+          width: 100%;
         }
 
         .chart-col {
@@ -314,6 +316,7 @@ export default function BehavioralAnalytics({ activeShed }) {
           align-items: center;
           gap: 6px;
           height: 100%;
+          min-width: 0;
         }
 
         .bars-stack {
@@ -378,7 +381,29 @@ export default function BehavioralAnalytics({ activeShed }) {
 
           .svg-chart-container {
             height: 150px;
-            gap: 6px;
+            gap: 4px;
+            min-width: 0;
+            width: 100%;
+          }
+
+          .chart-bars-wrap {
+            gap: 2px;
+            min-width: 0;
+            width: 100%;
+          }
+
+          .chart-col {
+            min-width: 0;
+          }
+
+          /* Hide even hour labels under 640px/sub-425px so chart NEVER overflows */
+          .chart-col:nth-child(2n) .x-label {
+            display: none;
+          }
+
+          .bars-stack {
+            max-width: 12px;
+            gap: 1px;
           }
 
           .y-axis {
@@ -387,11 +412,11 @@ export default function BehavioralAnalytics({ activeShed }) {
           }
 
           .bar {
-            width: 3.5px;
+            width: 2.5px;
           }
 
           .x-label {
-            font-size: 0.58rem;
+            font-size: 0.55rem;
           }
 
           .analytics-summary-row {
@@ -401,6 +426,16 @@ export default function BehavioralAnalytics({ activeShed }) {
         }
 
         @media (max-width: 360px) {
+          .y-axis {
+            width: 20px;
+            font-size: 0.55rem;
+          }
+          .bar {
+            width: 2px;
+          }
+          .bars-stack {
+            max-width: 9px;
+          }
           .range-pills {
             padding: 2px;
           }

@@ -371,12 +371,23 @@ export default function ReportsPage({ activeShed }) {
 
           .card-metrics-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
             background: #FFFFFF;
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #E2E8F0;
+          }
+
+          @media (max-width: 480px) {
+            .card-metrics-grid {
+              grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+              gap: 8px;
+              padding: 8px 10px;
+            }
+            .metric-tile:first-child {
+              grid-column: span 2;
+            }
           }
 
           .metric-tile {
