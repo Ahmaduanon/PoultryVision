@@ -108,41 +108,54 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
         )}
       </div>
 
-      {/* Snapshot Inspection Modal */}
+      {/* Snapshot Inspection Modal / Mobile Bottom-Sheet Drawer */}
       {selectedAlert && (
-        <div className="modal-backdrop" onClick={() => setSelectedAlert(null)}>
-          <div className="modal-content card" onClick={(e) => e.stopPropagation()}>
+        <div className="alert-modal-backdrop" onClick={() => setSelectedAlert(null)}>
+          <div className="alert-sheet-card card" onClick={(e) => e.stopPropagation()}>
             <div className="sheet-handle-bar">
               <div className="sheet-handle"></div>
             </div>
 
-            <div className="modal-header">
-              <div className="modal-title-wrap">
+            <div className="alert-sheet-header">
+              <div className="alert-sheet-title-wrap">
                 {getAlertBadge(selectedAlert.type)}
-                <h3 className="modal-title">{selectedAlert.title}</h3>
+                <h3 className="alert-sheet-title">{selectedAlert.title}</h3>
               </div>
-              <button className="close-btn touch-target" onClick={() => setSelectedAlert(null)}>
+              <button 
+                type="button"
+                className="alert-sheet-close-btn touch-target" 
+                onClick={() => setSelectedAlert(null)}
+                aria-label="Close"
+              >
                 <IconX size={18} />
               </button>
             </div>
 
-            <div className="modal-body">
+            <div className="alert-sheet-body">
               {/* Snapshot Image Container */}
               <div className="snapshot-box">
                 <div className="snapshot-bg">
                   <div className="sim-snapshot-graphic">
                     <div className="sim-cluster-circle"></div>
                     <div className="sim-bounding-box">
-                      <span className="sim-box-tag">ALERT: Huddling Cluster ({selectedAlert.birdsAffected} birds)</span>
+                      <span className="sim-box-tag">
+                        {selectedAlert.type.toUpperCase()}: {selectedAlert.title}
+                      </span>
                     </div>
+                  </div>
+                  {/* CCTV Live Camera Overlay */}
+                  <div className="cctv-overlay-bar">
+                    <span className="cctv-rec-dot"></span>
+                    <span className="cctv-meta">CAM-01 [Brooder West] • 1080p 30fps</span>
+                    <span className="cctv-time">{selectedAlert.time}</span>
                   </div>
                 </div>
                 <div className="snapshot-hud">
-                  <span>SNAPSHOT ID: #SNAP-{selectedAlert.id}</span>
-                  <span>CONFIDENCE: {selectedAlert.confidence}</span>
+                  <span>ID: #SNAP-{selectedAlert.id}</span>
+                  <span>CONFIDENCE: <strong>{selectedAlert.confidence || '94.2%'}</strong></span>
                   <span className="hud-channel flex-inline items-center gap-1">
                     <IconBrandWhatsapp size={13} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
-                    WhatsApp Alert Sent
+                    WhatsApp Sync Ready
                   </span>
                 </div>
               </div>
@@ -158,35 +171,58 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
                   <span className="data-value">{selectedAlert.shed}</span>
                 </div>
                 <div className="data-item">
-                  <span className="data-label">Time & Duration</span>
-                  <span className="data-value">{selectedAlert.time} (8 mins detected)</span>
+                  <span className="data-label">Time & Status</span>
+                  <span className="data-value">{selectedAlert.time} ({selectedAlert.acknowledged ? 'Resolved' : 'Active'})</span>
                 </div>
                 <div className="data-item">
-                  <span className="data-label">Est. Stress Risk</span>
-                  <span className="data-value text-rose-600 font-bold">Cold Stress Cluster</span>
+                  <span className="data-label">Flock Impact</span>
+                  <span className="data-value text-rose-600 font-bold">{selectedAlert.birdsAffected || '45+'} birds affected</span>
+                </div>
+              </div>
+
+              {/* WhatsApp Automated Dispatch Status Card */}
+              <div className="wa-dispatch-preview-card">
+                <div className="wa-card-header">
+                  <div className="wa-badge-icon">
+                    <IconBrandWhatsapp size={16} />
+                  </div>
+                  <div>
+                    <span className="wa-card-title">Automated WhatsApp Broadcast Delivered</span>
+                    <span className="wa-card-sub">Sent automatically to registered farm manager & attendant devices</span>
+                  </div>
+                </div>
+                <div className="wa-snippet-body">
+                  <code>
+                    🚨 <strong>POULTRYVISION ALERT [{selectedAlert.type.toUpperCase()}]</strong><br />
+                    📍 <strong>Location:</strong> {selectedAlert.shed} - {selectedAlert.zone}<br />
+                    ⚠️ <strong>Anomaly:</strong> {selectedAlert.title} ({selectedAlert.birdsAffected || '45+'} birds)<br />
+                    ⏱ <strong>Timestamp:</strong> {selectedAlert.time} | <strong>Confidence:</strong> {selectedAlert.confidence || '94%'}<br />
+                    👉 <em>Status: Automated dispatch logged. Immediate pen inspection advised.</em>
+                  </code>
                 </div>
               </div>
             </div>
 
-            {/* Modal Actions */}
-            <div className="modal-footer">
+            {/* Modal / Drawer Footer Actions */}
+            <div className="alert-sheet-footer">
               <button 
-                className="modal-btn btn-secondary touch-target"
+                type="button" 
+                className="modal-btn-dismiss touch-target"
                 onClick={() => setSelectedAlert(null)}
               >
-                <IconVolumeOff size={16} />
-                <span>Mute 1hr</span>
+                Close
               </button>
 
               <button 
-                className="modal-btn btn-primary touch-target"
+                type="button"
+                className={`modal-btn-ack touch-target ${selectedAlert.acknowledged ? 'is-ack' : ''}`}
                 onClick={() => {
                   onAcknowledgeAlert(selectedAlert.id);
                   setSelectedAlert(null);
                 }}
               >
                 <IconUserCheck size={16} />
-                <span>Acknowledge & Dispatch</span>
+                <span>{selectedAlert.acknowledged ? 'Already Acknowledged' : 'Acknowledge Alert'}</span>
               </button>
             </div>
           </div>
@@ -410,37 +446,102 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
           cursor: pointer;
         }
 
-        /* Snapshot Modal */
-        .modal-content {
-          width: 100%;
-          max-width: 540px;
-          background: white;
-          border-radius: var(--radius-lg);
-          overflow: hidden;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        /* Alert Detail Sheet & Modal */
+        .alert-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background-color: rgba(15, 23, 42, 0.7);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+          z-index: 150;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          animation: alertFadeIn 0.2s ease-out;
         }
 
-        .modal-header {
+        @keyframes alertFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        .alert-sheet-card {
+          width: 100%;
+          max-width: 550px;
+          background: #FFFFFF;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35);
+          display: flex;
+          flex-direction: column;
+          max-height: 90vh;
+          animation: alertScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes alertScaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.96) translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+
+        .sheet-handle-bar {
+          display: none;
+        }
+
+        .alert-sheet-header {
           padding: 16px 20px;
           border-bottom: 1px solid var(--border-light);
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 12px;
+          background: #FFFFFF;
         }
 
-        .modal-title-wrap {
+        .alert-sheet-title-wrap {
           display: flex;
           align-items: center;
           gap: 10px;
+          min-width: 0;
         }
 
-        .modal-title {
+        .alert-sheet-title {
           font-size: 1.05rem;
           font-weight: 700;
+          color: var(--text-primary);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
-        .modal-body {
-          padding: 20px;
+        .alert-sheet-close-btn {
+          background: #F1F5F9;
+          border: none;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #64748B;
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: background 0.15s, color 0.15s;
+        }
+        .alert-sheet-close-btn:hover {
+          background: #E2E8F0;
+          color: #0F172A;
+        }
+
+        .alert-sheet-body {
+          padding: 18px 20px;
+          overflow-y: auto;
           display: flex;
           flex-direction: column;
           gap: 16px;
@@ -451,26 +552,70 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
           overflow: hidden;
           border: 1px solid var(--border-light);
           background: #0F172A;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .snapshot-bg {
-          height: 200px;
-          background: radial-gradient(circle at 60% 50%, #1E293B 0%, #0F172A 100%);
+          height: 180px;
+          background: radial-gradient(circle at 55% 50%, #1E293B 0%, #0F172A 100%);
           display: flex;
           align-items: center;
           justify-content: center;
           position: relative;
         }
 
+        .cctv-overlay-bar {
+          position: absolute;
+          top: 10px;
+          left: 12px;
+          right: 12px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          color: #F8FAFC;
+          background: rgba(15, 23, 42, 0.65);
+          backdrop-filter: blur(4px);
+          padding: 4px 10px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cctv-rec-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #EF4444;
+          box-shadow: 0 0 8px #EF4444;
+          animation: recPulse 1.2s infinite;
+        }
+
+        @keyframes recPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+
+        .cctv-meta {
+          flex: 1;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+        }
+
+        .cctv-time {
+          color: #94A3B8;
+        }
+
         .sim-snapshot-graphic {
           position: relative;
-          width: 160px;
-          height: 120px;
+          width: 170px;
+          height: 110px;
+          margin-top: 14px;
         }
 
         .sim-cluster-circle {
-          width: 100px;
-          height: 100px;
+          width: 90px;
+          height: 90px;
           border-radius: 50%;
           background: radial-gradient(circle, rgba(239, 68, 68, 0.45) 0%, transparent 70%);
           margin: 10px auto;
@@ -488,12 +633,13 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
 
         .sim-box-tag {
           font-family: var(--font-mono);
-          font-size: 0.68rem;
+          font-size: 0.66rem;
           font-weight: 700;
           background: #EF4444;
           color: white;
           padding: 2px 6px;
           border-radius: 3px;
+          letter-spacing: 0.02em;
         }
 
         .snapshot-hud {
@@ -505,17 +651,18 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
           font-family: var(--font-mono);
           font-size: 0.72rem;
           color: #94A3B8;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .hud-channel {
-          color: #4ADE80;
+          color: #22C55E;
           font-weight: 700;
         }
 
         .data-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
+          gap: 10px;
         }
 
         .data-item {
@@ -529,48 +676,206 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
         }
 
         .data-label {
-          font-size: 0.72rem;
+          font-size: 0.70rem;
           color: var(--text-muted);
           font-weight: 600;
           text-transform: uppercase;
+          letter-spacing: 0.03em;
         }
 
         .data-value {
-          font-size: 0.88rem;
+          font-size: 0.86rem;
           font-weight: 700;
           color: var(--text-primary);
         }
 
-        .modal-footer {
+        /* WhatsApp Dispatch Preview Card */
+        .wa-dispatch-preview-card {
+          background: #F0FDF4;
+          border: 1px solid #BBF7D0;
+          border-radius: var(--radius-md);
+          padding: 12px 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .wa-card-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .wa-badge-icon {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: #22C55E;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .wa-card-title {
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #14532D;
+          display: block;
+        }
+
+        .wa-card-sub {
+          font-size: 0.70rem;
+          color: #15803D;
+          display: block;
+        }
+
+        .wa-snippet-body {
+          background: #FFFFFF;
+          border: 1px solid #DCFCE7;
+          border-radius: 6px;
+          padding: 8px 10px;
+          font-size: 0.74rem;
+          line-height: 1.45;
+          color: #1F2937;
+        }
+
+        .wa-snippet-body code {
+          font-family: inherit;
+        }
+
+        /* Footer Action Buttons */
+        .alert-sheet-footer {
           padding: 14px 20px;
           border-top: 1px solid var(--border-light);
           display: flex;
           align-items: center;
           justify-content: flex-end;
           gap: 10px;
+          background: #F8FAFC;
         }
 
-        .modal-btn {
+        .modal-btn-dismiss {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          padding: 8px 16px;
+          justify-content: center;
+          padding: 10px 18px;
           border-radius: var(--radius-md);
-          font-size: 0.85rem;
+          font-size: 0.84rem;
           font-weight: 600;
-          cursor: pointer;
-        }
-
-        .btn-secondary {
           background: #F1F5F9;
           color: #475569;
           border: 1px solid var(--border-light);
+          cursor: pointer;
+          transition: background 0.15s, color 0.15s;
+        }
+        .modal-btn-dismiss:hover {
+          background: #E2E8F0;
+          color: #0F172A;
         }
 
-        .btn-primary {
+        .modal-btn-ack {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          padding: 10px 16px;
+          border-radius: var(--radius-md);
+          font-size: 0.84rem;
+          font-weight: 700;
           background: #0F172A;
           color: white;
           border: none;
+          cursor: pointer;
+          transition: background 0.15s;
+        }
+        .modal-btn-ack:hover {
+          background: #1E293B;
+        }
+        .modal-btn-ack.is-ack {
+          background: #E2E8F0;
+          color: #64748B;
+          cursor: default;
+        }
+
+        /* Mobile Bottom-Sheet Drawer */
+        @media (max-width: 767px) {
+          .alert-modal-backdrop {
+            align-items: flex-end;
+            padding: 0;
+          }
+
+          .alert-sheet-card {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 22px 22px 0 0;
+            max-height: 86vh;
+            animation: alertDrawerSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          @keyframes alertDrawerSlideUp {
+            from {
+              transform: translateY(100%);
+            }
+            to {
+              transform: translateY(0);
+            }
+          }
+
+          .sheet-handle-bar {
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+            padding-bottom: 2px;
+          }
+
+          .sheet-handle {
+            width: 44px;
+            height: 5px;
+            background-color: #CBD5E1;
+            border-radius: 999px;
+          }
+
+          .alert-sheet-header {
+            padding: 10px 16px 14px 16px;
+          }
+
+          .alert-sheet-title {
+            font-size: 0.96rem;
+          }
+
+          .alert-sheet-body {
+            padding: 14px 16px;
+            gap: 12px;
+          }
+
+          .snapshot-bg {
+            height: 160px;
+          }
+
+          .snapshot-hud {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            font-size: 0.68rem;
+          }
+
+          .data-grid {
+            grid-template-columns: 1fr;
+            gap: 8px;
+          }
+
+          .alert-sheet-footer {
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)) 16px;
+          }
+
+          .modal-btn-dismiss, .modal-btn-ack {
+            width: 100%;
+            padding: 12px;
+          }
         }
 
         @media (max-width: 640px) {
@@ -589,35 +894,6 @@ export default function AlertCenter({ alerts, onAcknowledgeAlert }) {
           }
           .alert-item-title {
             font-size: 0.88rem;
-          }
-          .modal-content {
-            width: 94%;
-            max-height: 88vh;
-            border-radius: 16px;
-            overflow-y: auto;
-          }
-          .modal-body {
-            padding: 14px;
-            gap: 12px;
-          }
-          .data-grid {
-            grid-template-columns: 1fr;
-            gap: 8px;
-          }
-          .snapshot-hud {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-            font-size: 0.68rem;
-          }
-          .modal-footer {
-            flex-direction: column;
-            gap: 8px;
-            padding: 12px 14px;
-          }
-          .modal-btn {
-            width: 100%;
-            justify-content: center;
           }
         }
 

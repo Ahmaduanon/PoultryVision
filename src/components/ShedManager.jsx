@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { IconCamera, IconPlus, IconCpu, IconMapPin, IconX } from '@tabler/icons-react';
+import { 
+  IconCamera, IconPlus, IconCpu, IconMapPin, IconX, 
+  IconVideo, IconWifi, IconLoader2, IconCheck, IconLayersIntersect 
+} from '@tabler/icons-react';
 
 export default function ShedManager({ activeShed }) {
   const [cameras, setCameras] = useState([
@@ -60,29 +63,39 @@ export default function ShedManager({ activeShed }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [newCamName, setNewCamName] = useState('');
   const [newCamIP, setNewCamIP] = useState('');
+  const [newCamShed, setNewCamShed] = useState('Shed 01 - Broilers');
+  const [newCamZone, setNewCamZone] = useState('Thermal Brooder #3');
+  const [newCamPreset, setNewCamPreset] = useState('1080p');
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const handleAddCamera = (e) => {
     e.preventDefault();
-    if (!newCamName || !newCamIP) return;
-    setCameras(prev => [
-      ...prev,
-      {
-        id: `cam-0${prev.length + 1}`,
-        name: newCamName,
-        shed: 'Shed 01 - Broilers',
-        ip: newCamIP,
-        rtsp: `rtsp://admin:pass@${newCamIP}:554/h264`,
-        status: 'online',
-        fps: 30,
-        latency: '15ms',
-        model: 'YOLOv11 ONNX (FP16)',
-        temp: '41°C',
-        zone: 'Custom Zone'
-      }
-    ]);
-    setShowAddModal(false);
-    setNewCamName('');
-    setNewCamIP('');
+    if (!newCamName.trim() || !newCamIP.trim()) return;
+    
+    setIsConnecting(true);
+    setTimeout(() => {
+      const cleanIP = newCamIP.replace(/^rtsp:\/\/(.*@)?/, '').split(/[:\/]/)[0] || newCamIP;
+      setCameras(prev => [
+        ...prev,
+        {
+          id: `cam-0${prev.length + 1}`,
+          name: newCamName,
+          shed: newCamShed,
+          ip: cleanIP,
+          rtsp: newCamIP.startsWith('rtsp://') ? newCamIP : `rtsp://admin:pass@${cleanIP}:554/h264`,
+          status: 'online',
+          fps: newCamPreset === '4k' ? 15 : 30,
+          latency: '14ms',
+          model: 'YOLOv11 ONNX (FP16)',
+          temp: '41°C',
+          zone: newCamZone || 'Custom Brooder Zone'
+        }
+      ]);
+      setIsConnecting(false);
+      setShowAddModal(false);
+      setNewCamName('');
+      setNewCamIP('');
+    }, 600);
   };
 
   return (
@@ -151,40 +164,148 @@ export default function ShedManager({ activeShed }) {
         </div>
       </div>
 
-      {/* Add Camera Modal */}
+      {/* Add Camera Modal — Pinned at Top with Smooth Dropdown */}
       {showAddModal && (
-        <div className="modal-backdrop" onClick={() => setShowAddModal(false)}>
-          <div className="modal-content card" onClick={e => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 className="modal-title">Register New RTSP Camera Stream</h3>
-              <button className="close-btn" onClick={() => setShowAddModal(false)}><IconX size={18} /></button>
+        <div className="cam-modal-backdrop" onClick={() => setShowAddModal(false)}>
+          <div className="cam-modal-card card" onClick={e => e.stopPropagation()}>
+            <div className="cam-modal-header">
+              <div className="cam-header-title-wrap">
+                <div className="cam-icon-badge">
+                  <IconVideo size={18} />
+                </div>
+                <div>
+                  <h3 className="cam-modal-title">Register RTSP Camera Stream</h3>
+                  <p className="cam-modal-sub">Deploy real-time edge ONNX inference pipeline</p>
+                </div>
+              </div>
+              <button 
+                type="button" 
+                className="cam-close-btn touch-target" 
+                onClick={() => setShowAddModal(false)}
+                aria-label="Close"
+              >
+                <IconX size={18} />
+              </button>
             </div>
-            <form onSubmit={handleAddCamera} className="modal-body">
+
+            <form onSubmit={handleAddCamera} className="cam-modal-body">
               <div className="form-group">
-                <label className="form-label">Camera Name / Description</label>
+                <label className="form-label">Camera Label / Description</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. North Brooder Camera 05"
+                  placeholder="e.g. Brooder East Camera 05"
                   value={newCamName}
                   onChange={e => setNewCamName(e.target.value)}
-                  className="form-input"
+                  className="cam-input"
                   required
                 />
               </div>
+
+              <div className="form-row-2col">
+                <div className="form-group">
+                  <label className="form-label">Pen / Shed Location</label>
+                  <select 
+                    value={newCamShed}
+                    onChange={e => setNewCamShed(e.target.value)}
+                    className="cam-select"
+                  >
+                    <option value="Shed 01 - Broilers">Shed 01 - Broilers (Oyo)</option>
+                    <option value="Shed 02 - Layers">Shed 02 - Layers (Ogun)</option>
+                    <option value="Shed 03 - Nursery">Shed 03 - Nursery (Kaduna)</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Target Zone Tag</label>
+                  <input 
+                    type="text"
+                    value={newCamZone}
+                    onChange={e => setNewCamZone(e.target.value)}
+                    placeholder="e.g. Feeder Line #3"
+                    className="cam-input"
+                  />
+                </div>
+              </div>
+
               <div className="form-group">
-                <label className="form-label">IP Address / RTSP Host</label>
-                <input 
-                  type="text" 
-                  placeholder="192.168.1.110"
-                  value={newCamIP}
-                  onChange={e => setNewCamIP(e.target.value)}
-                  className="form-input"
-                  required
-                />
+                <div className="label-with-helper">
+                  <label className="form-label">RTSP Stream URI / IP Address</label>
+                  <span className="format-hint">Format: rtsp://user:pass@ip:port/h264</span>
+                </div>
+                <div className="rtsp-input-box">
+                  <IconWifi size={16} className="text-slate-400 flex-shrink-0" />
+                  <input 
+                    type="text" 
+                    placeholder="192.168.1.110 or rtsp://admin:pass@..."
+                    value={newCamIP}
+                    onChange={e => setNewCamIP(e.target.value)}
+                    className="rtsp-clean-input"
+                    required
+                  />
+                </div>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="modal-btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancel</button>
-                <button type="submit" className="modal-btn btn-primary">Connect Stream</button>
+
+              {/* Resolution & FPS Presets */}
+              <div className="form-group">
+                <label className="form-label">Stream Resolution Preset</label>
+                <div className="preset-pills">
+                  <button 
+                    type="button" 
+                    className={`preset-btn ${newCamPreset === '1080p' ? 'active' : ''}`}
+                    onClick={() => setNewCamPreset('1080p')}
+                  >
+                    1080p @ 30 FPS <span className="recommended-tag">Recommended</span>
+                  </button>
+                  <button 
+                    type="button" 
+                    className={`preset-btn ${newCamPreset === '720p' ? 'active' : ''}`}
+                    onClick={() => setNewCamPreset('720p')}
+                  >
+                    720p @ 30 FPS
+                  </button>
+                  <button 
+                    type="button" 
+                    className={`preset-btn ${newCamPreset === '4k' ? 'active' : ''}`}
+                    onClick={() => setNewCamPreset('4k')}
+                  >
+                    4K @ 15 FPS
+                  </button>
+                </div>
+              </div>
+
+              {/* Edge Inference Badge */}
+              <div className="ai-inference-note">
+                <IconCpu size={16} className="text-emerald-600 flex-shrink-0" />
+                <span className="note-text">
+                  <strong>AI Pipeline:</strong> YOLOv11 ONNX (FP16) spatial tracking will attach automatically on stream ping.
+                </span>
+              </div>
+
+              <div className="cam-modal-footer">
+                <button 
+                  type="button" 
+                  className="cam-btn-cancel touch-target" 
+                  onClick={() => setShowAddModal(false)}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="cam-btn-connect touch-target"
+                  disabled={isConnecting}
+                >
+                  {isConnecting ? (
+                    <>
+                      <IconLoader2 size={16} className="animate-spin" />
+                      <span>Validating Stream...</span>
+                    </>
+                  ) : (
+                    <>
+                      <IconCheck size={16} />
+                      <span>Connect Stream</span>
+                    </>
+                  )}
+                </button>
               </div>
             </form>
           </div>
@@ -337,25 +458,304 @@ export default function ShedManager({ activeShed }) {
           display: flex;
           flex-direction: column;
           gap: 6px;
-          margin-bottom: 14px;
+          margin-bottom: 4px;
         }
 
         .form-label {
-          font-size: 0.82rem;
+          font-size: 0.80rem;
           font-weight: 700;
+          color: var(--text-primary);
         }
 
-        .form-input {
+        /* Add Camera Modal — Pinned to Top with Smooth Dropdown */
+        .cam-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(15, 23, 42, 0.7);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+          z-index: 150;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: clamp(16px, 4vh, 48px) 16px 20px 16px;
+          overflow-y: auto;
+          animation: camBackdropFade 0.2s ease-out;
+        }
+
+        @keyframes camBackdropFade {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        .cam-modal-card {
+          max-width: 540px;
+          width: 100%;
+          background: #FFFFFF;
+          border-radius: 20px;
+          box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35);
+          overflow: hidden;
+          animation: camSlideDown 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+          margin-bottom: 24px;
+        }
+
+        @keyframes camSlideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-28px) scale(0.97);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .cam-modal-header {
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--border-light);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          background: #F8FAFC;
+        }
+
+        .cam-header-title-wrap {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .cam-icon-badge {
+          width: 36px;
+          height: 36px;
+          border-radius: var(--radius-md);
+          background: #DCFCE7;
+          color: #15803D;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .cam-modal-title {
+          font-size: 1.02rem;
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+
+        .cam-modal-sub {
+          font-size: 0.72rem;
+          color: var(--text-muted);
+        }
+
+        .cam-close-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: #E2E8F0;
+          border: none;
+          color: #64748B;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cam-close-btn:hover {
+          background: #CBD5E1;
+          color: #0F172A;
+        }
+
+        .cam-modal-body {
+          padding: 18px 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .form-row-2col {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        .label-with-helper {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .format-hint {
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          color: var(--text-muted);
+        }
+
+        .cam-input, .cam-select {
           padding: 10px 14px;
           border-radius: var(--radius-md);
           border: 1px solid var(--border-light);
           font-family: inherit;
-          font-size: 0.88rem;
+          font-size: 0.86rem;
+          color: var(--text-primary);
+          background: #FFFFFF;
           outline: none;
+          transition: border-color 0.15s;
+          width: 100%;
+          box-sizing: border-box;
         }
-        .form-input:focus { border-color: var(--color-primary); }
+        .cam-input:focus, .cam-select:focus {
+          border-color: #84CC16;
+          box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.15);
+        }
+
+        .rtsp-input-box {
+          display: flex;
+          align-items: center;
+          background: #FFFFFF;
+          border: 1px solid var(--border-light);
+          border-radius: var(--radius-md);
+          padding: 0 12px;
+          gap: 8px;
+          transition: border-color 0.15s;
+        }
+        .rtsp-input-box:focus-within {
+          border-color: #84CC16;
+          box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.15);
+        }
+
+        .rtsp-clean-input {
+          flex: 1;
+          border: none;
+          outline: none;
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          padding: 10px 0;
+          color: #0F172A;
+          background: transparent;
+        }
+
+        .preset-pills {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .preset-btn {
+          font-size: 0.74rem;
+          font-weight: 600;
+          padding: 7px 12px;
+          border-radius: var(--radius-full);
+          border: 1px solid var(--border-light);
+          background: #F8FAFC;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: all 0.15s;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .preset-btn:hover {
+          background: #F1F5F9;
+          color: var(--text-primary);
+        }
+
+        .preset-btn.active {
+          background: #0F172A;
+          color: #FFFFFF;
+          border-color: #0F172A;
+        }
+
+        .recommended-tag {
+          font-size: 0.65rem;
+          background: #84CC16;
+          color: #0F172A;
+          padding: 1px 6px;
+          border-radius: var(--radius-full);
+          font-weight: 700;
+        }
+
+        .ai-inference-note {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          padding: 10px 12px;
+          border-radius: var(--radius-md);
+          background: #F0FDF4;
+          border: 1px solid #DCFCE7;
+          font-size: 0.74rem;
+          color: #166534;
+          line-height: 1.4;
+        }
+
+        .cam-modal-footer {
+          padding-top: 6px;
+          border-top: 1px solid var(--border-light);
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 10px;
+        }
+
+        .cam-btn-cancel {
+          padding: 9px 16px;
+          border-radius: var(--radius-md);
+          background: #F1F5F9;
+          color: #475569;
+          border: 1px solid var(--border-light);
+          font-size: 0.84rem;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .cam-btn-connect {
+          padding: 9px 18px;
+          border-radius: var(--radius-md);
+          background: #0F172A;
+          color: white;
+          border: none;
+          font-size: 0.84rem;
+          font-weight: 700;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: background 0.15s;
+        }
+        .cam-btn-connect:hover {
+          background: #1E293B;
+        }
 
         @media (max-width: 640px) {
+          .cam-modal-backdrop {
+            padding-top: 12px;
+            padding-left: 10px;
+            padding-right: 10px;
+          }
+          .form-row-2col {
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
+          .preset-pills {
+            flex-direction: column;
+          }
+          .preset-btn {
+            width: 100%;
+            justify-content: space-between;
+          }
+          .cam-modal-footer {
+            flex-direction: column;
+            gap: 8px;
+          }
+          .cam-btn-cancel, .cam-btn-connect {
+            width: 100%;
+            justify-content: center;
+          }
           .shed-manager-container {
             padding: 12px 8px;
             gap: 14px;

@@ -3,8 +3,8 @@ import { IconHome, IconCamera, IconBell, IconServer, IconFileAnalytics } from '@
 
 export default function BottomNav({ activeTab, setActiveTab, alertCount }) {
   const tabs = [
-    { id: 'landing', label: 'Home', shortLabel: 'Home', icon: IconHome },
-    { id: 'dashboard', label: 'Live CCTV', shortLabel: 'Live', icon: IconCamera },
+    { id: 'dashboard', label: 'Home', shortLabel: 'Home', icon: IconHome },
+    { id: 'live-feed', label: 'Live CCTV', shortLabel: 'Live', icon: IconCamera },
     { id: 'cameras', label: 'Pens', shortLabel: 'Pens', icon: IconServer },
     { id: 'alerts', label: 'Alerts', shortLabel: 'Alerts', icon: IconBell, badge: alertCount },
     { id: 'reports', label: 'Reports', shortLabel: 'Reports', icon: IconFileAnalytics },

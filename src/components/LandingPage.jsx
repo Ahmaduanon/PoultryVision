@@ -1502,7 +1502,10 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
 
         @media (min-width: 960px) {
           .diagram-arrow {
-            display: block;
+            display: block !important;
+            transform: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
         }
 
@@ -2167,15 +2170,64 @@ export default function LandingPage({ onLaunchDemo, onOpenWaitlist }) {
             font-size: 0.85rem !important;
           }
 
-          /* Diagram cards (How it works) */
+          /* Diagram cards (How it works - Automated Pipeline) */
           .horizontal-diagram-grid {
-            gap: 12px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 20px !important;
           }
 
           .diagram-card {
             min-width: 0 !important;
             width: 100% !important;
+            box-sizing: border-box !important;
             padding: 22px 18px !important;
+            border-radius: 16px !important;
+            text-align: left !important;
+            align-items: flex-start !important;
+            gap: 10px !important;
+            background: #FFFFFF !important;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+          }
+
+          .diagram-card .icon-circle {
+            width: 44px !important;
+            height: 44px !important;
+            margin-bottom: 2px !important;
+          }
+
+          .diagram-card .diagram-step-tag {
+            font-size: 0.70rem !important;
+          }
+
+          .diagram-card .diagram-title {
+            font-size: 1.05rem !important;
+            line-height: 1.35 !important;
+          }
+
+          .diagram-card .diagram-desc {
+            font-size: 0.84rem !important;
+            line-height: 1.5 !important;
+          }
+
+          .diagram-card .diagram-features {
+            text-align: left !important;
+            align-items: flex-start !important;
+            gap: 6px !important;
+            font-size: 0.78rem !important;
+          }
+
+          .diagram-arrow {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0 !important;
+            color: #94A3B8 !important;
+            transform: rotate(90deg) !important;
           }
 
           /* Dashboard preview mockup */

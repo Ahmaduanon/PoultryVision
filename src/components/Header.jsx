@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   IconBell, IconChevronDown, IconCamera, IconLayersIntersect, IconServer, 
   IconFileAnalytics, IconUser, IconLogout, IconMenu2, IconX, IconArrowRight, 
-  IconArrowLeft, IconBrandWhatsapp 
+  IconArrowLeft, IconBrandWhatsapp, IconHome, IconAdjustments 
 } from '@tabler/icons-react';
 
 export default function Header({ activeTab, setActiveTab, activeShed, setActiveShed, unreadAlertsCount, user, onOpenWaitlist, onLogout }) {
@@ -425,14 +425,21 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
           <span className="brand-console-pill">Console</span>
         </div>
 
-        {/* Desktop Top View Navigation for Logged In Users */}
+        {/* Desktop Top View Navigation */}
         <div className="top-nav-links">
           <button 
             className={`top-nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
             onClick={() => setActiveTab('dashboard')}
           >
+            <IconHome className="w-4 h-4" />
+            <span>Overview</span>
+          </button>
+          <button 
+            className={`top-nav-btn ${activeTab === 'live-feed' ? 'active' : ''}`}
+            onClick={() => setActiveTab('live-feed')}
+          >
             <IconCamera className="w-4 h-4" />
-            <span>Live Control Center</span>
+            <span>Live CCTV</span>
           </button>
           <button 
             className={`top-nav-btn ${activeTab === 'cameras' ? 'active' : ''}`}
@@ -447,6 +454,13 @@ export default function Header({ activeTab, setActiveTab, activeShed, setActiveS
           >
             <IconFileAnalytics className="w-4 h-4" />
             <span>Reports</span>
+          </button>
+          <button 
+            className={`top-nav-btn ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => setActiveTab('settings')}
+          >
+            <IconAdjustments className="w-4 h-4" />
+            <span>Alert Settings</span>
           </button>
         </div>
       </div>
